@@ -3,7 +3,7 @@ from db.reader import Reader
 from db.model import *
 
 class HomeDBReader(Reader):
-    def getBlueprints(self):
+    def getBlueprints(self, ofType: str = None):
         db_file = os.getenv("DB_FILE")
         sql = """SELECT 
                     key
@@ -20,6 +20,9 @@ class HomeDBReader(Reader):
                     , tax_category
                 FROM ref_blueprint"""
         
+        if(ofType):
+            sql += f" WHERE blueprint_type = '{ofType}'"
+
         blueprints = []
 
         rows = Reader().query(db_file, sql)
