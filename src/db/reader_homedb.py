@@ -31,5 +31,4 @@ class HomeDBReader(Reader):
             (key, blueprint_type, frequency, due_date, due_weekday, amount, origin, description, source_account, target_account, tax_relevance, tax_category) = row
             blueprint = Blueprint(key,blueprint_type,frequency,due_date,due_weekday,amount,origin, description,source_account,target_account,tax_relevance,tax_category)
             blueprints.append(blueprint)
-            print(blueprint)
         return blueprints
