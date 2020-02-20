@@ -1,4 +1,11 @@
+# Folders
 .idea/
+
 venv/
+**/__pycache__/
 
 demodata/
+
+# Files
+.env
+*.log
