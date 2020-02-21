@@ -21,8 +21,7 @@ if __name__ == "__main__":
     blueprints = HomeDBReader().getBlueprints()
 
     for blueprint in blueprints:
-        print(f"""INSERT INTO expenses{blueprint.getExpenseAttributes()} VALUES {blueprint.getExpensePlaceholders()}""")
-        print(blueprint.getExpenseValues())
+        HomeDBWriter().write_expenses(blueprint)
         break
 
     print('end')
