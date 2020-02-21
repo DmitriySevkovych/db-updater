@@ -3,14 +3,15 @@ from db.reader import Reader
 from db.model import *
 
 class HomeDBReader(Reader):
-    def getBlueprints(self, ofType: str = None):
+    def getBlueprints(self, ofBlueprintType: str = None):
         db_file = os.getenv("DB_FILE")
         sql = """SELECT 
                     key
-                    , type as blueprint_type
+                    , blueprint_type
                     , frequency
                     , due_date
                     , due_weekday
+                    , type as transaction_type
                     , amount
                     , origin
                     , description
@@ -20,15 +21,15 @@ class HomeDBReader(Reader):
                     , tax_category
                 FROM ref_blueprint"""
         
-        if(ofType):
-            sql += f" WHERE blueprint_type = '{ofType}'"
+        if(ofBlueprintType):
+            sql += f" WHERE blueprint_type = '{ofBlueprintType}'"
 
         blueprints = []
 
         rows = Reader().query(db_file, sql)
 
         for row in rows:
-            (key, blueprint_type, frequency, due_date, due_weekday, amount, origin, description, source_account, target_account, tax_relevance, tax_category) = row
-            blueprint = Blueprint(key,blueprint_type,frequency,due_date,due_weekday,amount,origin, description,source_account,target_account,tax_relevance,tax_category)
+            (key, blueprint_type, frequency, due_date, due_weekday, transaction_type, amount, origin, description, source_account, target_account, tax_relevance, tax_category) = row
+            blueprint = Blueprint(key,blueprint_type,frequency,due_date,due_weekday,transaction_type,amount,origin, description,source_account,target_account,tax_relevance,tax_category)
             blueprints.append(blueprint)
         return blueprints
