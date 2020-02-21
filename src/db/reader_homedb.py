@@ -3,7 +3,7 @@ from db.reader import Reader
 from db.model import *
 
 class HomeDBReader(Reader):
-    def getBlueprints(self, ofBlueprintType: str = None):
+    def get_blueprints(self, ofBlueprintType: str = None):
         db_file = os.getenv("DB_FILE")
         sql = """SELECT 
                     key

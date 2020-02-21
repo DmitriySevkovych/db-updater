@@ -18,10 +18,14 @@ if __name__ == "__main__":
     path = Path(db_file)
     logging.basicConfig(filename=f'{path.parent}/{path.stem}.log', level=logging.DEBUG)
 
-    blueprints = HomeDBReader().getBlueprints()
+    home_db_reader = HomeDBReader()
 
-    for blueprint in blueprints:
+    for blueprint in home_db_reader.get_blueprints('expense') :
         HomeDBWriter().write_expenses(blueprint)
+        break
+
+    for blueprint in home_db_reader.get_blueprints('income') :
+        HomeDBWriter().write_income(blueprint)
         break
 
     print('end')
