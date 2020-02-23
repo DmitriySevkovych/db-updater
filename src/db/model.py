@@ -12,6 +12,13 @@ class Weekday(Enum):
     SATURDAY = 5
     SUNDAY = 6
 
+class Frequency(Enum):
+    WEEKLY = 0
+    MONTHLY = 1
+    QUARTERLY = 3
+    SEMI_ANNUALLY = 6
+    ANNUALLY = 12
+
 
 @dataclass
 class Blueprint:

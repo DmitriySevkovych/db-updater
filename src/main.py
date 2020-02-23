@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 
 import logging
+from datetime import datetime
 from pathlib import Path
 
 from db.reader_homedb import *
@@ -23,19 +24,18 @@ if __name__ == "__main__":
     logging.debug('Start processing')
 
     home_db_reader = HomeDBReader()
+    home_db_writer = HomeDBWriter()
+
     for blueprint in home_db_reader.get_blueprints('expense'):
-        logging.debug(f'Retrieved blueprint {blueprint} from the database')
         for transaction in schedule_transactions(blueprint):
-            print(
-                f'Expense transaction on {transaction.date}: {transaction.blueprint.key}')
-            # HomeDBWriter().write_expenses(transaction)
+            home_db_writer.write_expenses(transaction)
+        home_db_writer.update_blueprint(blueprint)
+
 
     for blueprint in home_db_reader.get_blueprints('income'):
-        logging.debug(f'Retrieved blueprint {blueprint} from the database')
         for transaction in schedule_transactions(blueprint):
-            print(
-                f'Income transaction on {transaction.date}: {transaction.blueprint.key}')
-            # HomeDBWriter().write_income(transaction)
+            HomeDBWriter().write_income(transaction)
+        home_db_writer.update_blueprint(blueprint)
 
     logging.debug('End processing')
     print('end')

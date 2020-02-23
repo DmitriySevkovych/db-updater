@@ -8,20 +8,20 @@ class HomeDBWriter(Writer):
     def write_expenses(self, transaction: Transaction):
         db_file = os.getenv("DB_FILE")
         sqlInsert = f"INSERT INTO expenses {self._get_expense_attributes()} VALUES {self._get_expense_placeholders()}"
-        sqlUpdate = f"UPDATE ref_blueprint SET last_update='{date.today()}' WHERE key = ?"
 
-        writer = Writer()
-        # writer.execute(db_file,sqlInsert,self._get_expense_values(transaction))
-        writer.execute(db_file, sqlUpdate, (transaction.blueprint.key,))
+        Writer().execute(db_file, sqlInsert, self._get_expense_values(transaction))
 
     def write_income(self, transaction: Transaction):
         db_file = os.getenv("DB_FILE")
         sqlInsert = f"INSERT INTO income {self._get_income_attributes()} VALUES {self._get_income_placeholders()}"
+
+        Writer().execute(db_file, sqlInsert, self._get_income_values(transaction))
+
+    def update_blueprint(self, blueprint: Blueprint):
+        db_file = os.getenv("DB_FILE")
         sqlUpdate = f"UPDATE ref_blueprint SET last_update='{date.today()}' WHERE key = ?"
 
-        writer = Writer()
-        # writer.execute(db_file,sqlInsert,self._get_income_values(transaction))
-        writer.execute(db_file, sqlUpdate, (transaction.blueprint.key,))
+        Writer().execute(db_file, sqlUpdate, (blueprint.key,))
 
     # Private helper functions
 

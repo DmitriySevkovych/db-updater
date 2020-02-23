@@ -6,25 +6,30 @@ from db.model import *
 def is_payment_due(check_date: date, blueprint: Blueprint) -> bool:
     # TODO validate + log
 
-    frequency = blueprint.frequency
-    
-    due_date = blueprint.due_date
+    frequency = Frequency[blueprint.frequency]
+    due_date = get_date_from_str(
+        blueprint.due_date) if blueprint.due_date else None
     due_weekday = Weekday[blueprint.due_weekday] if blueprint.due_weekday else None
-    
-    last_update = blueprint.last_update
 
-    if(frequency == 'WEEKLY'):
+    if(frequency == Frequency.WEEKLY):
         return _is_weekly_payment_due(check_date, due_weekday)
-    elif(frequency == 'MONTHLY'):
-        pass
-    elif(frequency == 'QUARTERLY'):
-        pass
-    elif(frequency == 'SEMI-ANNUALLY'):
-        pass
-    elif(frequency == 'ANNUALLY'):
-        pass
     else:
-        raise Exception()  # TODO log and parametrise exception
+        return _is_regular_payment_due(check_date, due_date, frequency)
+
+
+def get_next_transaction_date(check_date) -> date:
+    check_day = Weekday(check_date.weekday())
+
+    if(check_day == Weekday.SATURDAY):
+        return check_date + datetime.timedelta(days=2)
+    elif(check_day == Weekday.SUNDAY):
+        return check_date + datetime.timedelta(days=1)
+
+    return check_date
+
+
+def get_date_from_str(datestring: str) -> date:
+    return datetime.datetime.strptime(datestring, '%Y-%m-%d').date()
 
 
 # Private helper methods
@@ -32,12 +37,14 @@ def is_payment_due(check_date: date, blueprint: Blueprint) -> bool:
 def _is_weekly_payment_due(check_date: date, due_weekday: Weekday) -> bool:
 
     if(due_weekday == None):
-        logging.error(f'Encountered WEEKLY frequency, but blueprintdue_weekday is None!')
+        logging.error(
+            f'Encountered WEEKLY frequency, but blueprintdue_weekday is None!')
         raise Exception()
 
     check_weekday = Weekday(check_date.weekday())
     return due_weekday == check_weekday
 
 
-def _is_monthly_payment_due(check_date: date, due_date: date):
-    pass
+def _is_regular_payment_due(check_date: date, due_date: date, frequency: Frequency):
+    delta = check_date.month - due_date.month + (check_date.year - due_date.year)*12
+    return check_date.day == due_date.day and delta % frequency.value == 0

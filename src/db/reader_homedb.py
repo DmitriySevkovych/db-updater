@@ -1,6 +1,8 @@
 import os
+import logging
 from db.reader import Reader
 from db.model import *
+
 
 class HomeDBReader(Reader):
     def get_blueprints(self, ofBlueprintType: str = None):
@@ -21,7 +23,7 @@ class HomeDBReader(Reader):
                     , tax_category
                     , last_update
                 FROM ref_blueprint"""
-        
+
         if(ofBlueprintType):
             sql += f" WHERE blueprint_type = '{ofBlueprintType}'"
 
@@ -30,7 +32,18 @@ class HomeDBReader(Reader):
         rows = Reader().query(db_file, sql)
 
         for row in rows:
-            (key, blueprint_type, frequency, due_date, due_weekday, transaction_type, amount, origin, description, source_account, target_account, tax_relevance, tax_category, last_update) = row
-            blueprint = Blueprint(key,blueprint_type,frequency,due_date,due_weekday,transaction_type,amount,origin, description,source_account,target_account,tax_relevance,tax_category, last_update)
+            # Destructure the db-row
+            (key, blueprint_type, frequency, due_date, due_weekday, transaction_type, amount, origin,
+             description, source_account, target_account, tax_relevance, tax_category, last_update) = row
+
+            # Create a new Blueprint object
+            blueprint = Blueprint(key, blueprint_type, frequency, due_date, due_weekday, transaction_type, amount,
+                                  origin, description, source_account, target_account, tax_relevance, tax_category, last_update)
+
             blueprints.append(blueprint)
+            
+            logging.debug(f'Retrieved blueprint {blueprint} from the database')
+
+        logging.info(f'Found {len(blueprints)} blueprints in the database')
+
         return blueprints
