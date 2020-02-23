@@ -1,9 +1,12 @@
 import os
 import smtplib
 import ssl
-from datetime import date
+from email.message import EmailMessage
+from email.utils import formatdate
+from datetime import datetime
 
-def send_statistics():
+
+def send_statistics(statistics: dict):
 
     email_server = os.getenv('EMAIL_SERVER')
     email_server_port = os.getenv('EMAIL_SERVER_PORT')
@@ -23,13 +26,13 @@ def send_statistics():
         server.login(mailbox, mailbox_password)
 
         # Send email
-        msg = f"""
-        From: {email_sender}
-        Subject: DB update statistics
-        Date: {date.today()}
+        msg = EmailMessage()
+        msg.set_content(f"""
+            Test statistics message
+        """)
+        msg.add_header('Subject', 'DB update statistics')
+        msg.add_header('From', email_sender)
+        msg.add_header('Date', formatdate(localtime=True))
 
-        Test statistics message
-        """
-        
         for receiver in email_receivers:
-            server.sendmail(email_sender, receiver, msg)
+            server.sendmail(email_sender, receiver, msg.as_string())
