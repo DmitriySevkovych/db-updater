@@ -2,6 +2,7 @@ from enum import Enum
 from dataclasses import dataclass
 import datetime
 
+
 class Weekday(Enum):
     MONDAY = 0,
     TUESDAY = 1,
@@ -10,6 +11,7 @@ class Weekday(Enum):
     FRIDAY = 4,
     SATURDAY = 5,
     SUNDAY = 6
+
 
 @dataclass
 class Blueprint:
@@ -27,3 +29,9 @@ class Blueprint:
     tax_relevance: int
     tax_category: str
     last_update: datetime.date
+
+
+@dataclass
+class Transaction:
+    date: datetime.date
+    blueprint: Blueprint
