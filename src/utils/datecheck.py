@@ -1,3 +1,4 @@
+import logging
 from datetime import date
 from db.model import *
 
@@ -9,12 +10,11 @@ def is_payment_due(check_date: date, blueprint: Blueprint) -> bool:
     
     due_date = blueprint.due_date
     due_weekday = Weekday[blueprint.due_weekday] if blueprint.due_weekday else None
-    print(due_weekday) 
+    
     last_update = blueprint.last_update
 
     if(frequency == 'WEEKLY'):
-        
-        _is_weekly_payment_due(check_date, due_weekday)
+        return _is_weekly_payment_due(check_date, due_weekday)
     elif(frequency == 'MONTHLY'):
         pass
     elif(frequency == 'QUARTERLY'):
@@ -32,7 +32,7 @@ def is_payment_due(check_date: date, blueprint: Blueprint) -> bool:
 def _is_weekly_payment_due(check_date: date, due_weekday: Weekday) -> bool:
 
     if(due_weekday == None):
-        # TODO log
+        logging.error(f'Encountered WEEKLY frequency, but blueprintdue_weekday is None!')
         raise Exception()
 
     check_weekday = Weekday(check_date.weekday())
