@@ -1,0 +1,13 @@
+<html>
+    <body>
+
+        <h1>Automated DB-Update Summary for {{ db }} on {{ date }}</h1>
+
+        <ul>
+            {% for key, value in summary_dict.items() %}
+            <li> {{ key }} -- {{ value }}</li>
+            {% endfor %}
+        </ul>
+        
+    </body>
+</html>

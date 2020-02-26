@@ -39,7 +39,7 @@ def synchronize_db():
             HomeDBWriter().write_income(transaction)
         home_db_writer.update_blueprint(blueprint)
 
-    # Send mail with synchronisation statistics
+    # Send mail with synchronisation summary
 
     logging.debug('End processing')
     print('end')
@@ -48,4 +48,7 @@ def synchronize_db():
 if __name__ == "__main__":
     # synchronize_db()
     load_dotenv()
-    send_statistics()
+
+    summary = {}
+
+    send_summary(summary)
