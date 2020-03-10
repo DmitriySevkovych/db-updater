@@ -1,13 +1,17 @@
 <html>
     <body>
 
-        <h1>Automated DB-Update Summary for {{ db }} on {{ date }}</h1>
+        <h3 style="text-align: center;">Automated DB-Update Summary for {{ db }} on {{ date }}</h3>
 
+
+        {% for summary_date, blueprint_list in summary_dict.items() %}
+        <h4>{{ summary_date }}</h4>
         <ul>
-            {% for key, value in summary_dict.items() %}
-            <li> {{ key }} -- {{ value }}</li>
+            {% for blueprint in blueprint_list %}
+            <li> {{ blueprint }}</li>
             {% endfor %}
         </ul>
+        {% endfor %}
         
     </body>
 </html>

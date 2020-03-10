@@ -36,19 +36,15 @@ def synchronize_db():
     # Sync income
     for blueprint in home_db_reader.get_blueprints('income'):
         for transaction in schedule_transactions(blueprint):
-            HomeDBWriter().write_income(transaction)
+            home_db_writer.write_income(transaction)
         home_db_writer.update_blueprint(blueprint)
 
     # Send mail with synchronisation summary
+    send_summary(home_db_writer.get_summary())
 
     logging.debug('End processing')
     print('end')
 
 
 if __name__ == "__main__":
-    # synchronize_db()
-    load_dotenv()
-
-    summary = {}
-
-    send_summary(summary)
+    synchronize_db()

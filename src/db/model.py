@@ -37,6 +37,8 @@ class Blueprint:
     tax_category: str
     last_update: datetime.date
 
+    def __repr__(self):
+        return f'{self.key} -- {self.blueprint_type}, {self.description}'
 
 @dataclass
 class Transaction:
