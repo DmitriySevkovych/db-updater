@@ -12,7 +12,6 @@ def create_connection(db_file: str) -> Connection:
     except Error as e:
         logging.critical(f'Could not connect to database {db_file}')
         logging.debug(e)
-        print(e)
         raise e
 
     return conn
