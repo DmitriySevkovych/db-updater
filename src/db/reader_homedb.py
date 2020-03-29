@@ -22,7 +22,7 @@ class HomeDBReader(Reader):
                     , tax_relevance
                     , tax_category
                     , last_update
-                FROM ref_blueprint"""
+                FROM blueprints"""
 
         if(ofBlueprintType):
             sql += f" WHERE blueprint_type = '{ofBlueprintType}'"

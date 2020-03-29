@@ -33,7 +33,7 @@ class HomeDBWriter(Writer):
 
     def update_blueprint(self, blueprint: Blueprint):
         db_file = os.getenv("DB_FILE")
-        sqlUpdate = f"UPDATE ref_blueprint SET last_update='{date.today()}' WHERE key = ?"
+        sqlUpdate = f"UPDATE blueprints SET last_update='{date.today()}' WHERE key = ?"
 
         Writer().execute(db_file, sqlUpdate, (blueprint.key,))
 
