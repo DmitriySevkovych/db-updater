@@ -1,5 +1,6 @@
 from db.dbutils import create_connection
 
+
 class Reader:
     def query(self, db_file: str, sql: str) -> list:
         conn = create_connection(db_file)

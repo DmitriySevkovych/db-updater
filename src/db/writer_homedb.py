@@ -3,7 +3,7 @@ from datetime import date
 from collections import OrderedDict 
 
 from db.writer import Writer
-from db.model import *
+from db.model import Blueprint, Transaction
 
 
 class HomeDBWriter(Writer):

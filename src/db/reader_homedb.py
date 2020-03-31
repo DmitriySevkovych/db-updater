@@ -1,7 +1,7 @@
 import os
 import logging
 from db.reader import Reader
-from db.model import *
+from db.model import Blueprint
 
 
 class HomeDBReader(Reader):
@@ -42,8 +42,8 @@ class HomeDBReader(Reader):
 
             blueprints.append(blueprint)
             
-            logging.debug(f'Retrieved blueprint {blueprint} from the database')
+            logging.debug('Retrieved blueprint %s from the database', blueprint)
 
-        logging.info(f'Found {len(blueprints)} blueprints in the database')
+        logging.info('Found %s blueprints in the database', len(blueprints))
 
         return blueprints
