@@ -1,6 +1,7 @@
 import os
 import smtplib
 import ssl
+import logging
 from email.message import EmailMessage
 from email.utils import formatdate
 from datetime import datetime
@@ -9,6 +10,10 @@ from jinja2 import Environment, PackageLoader, Template, select_autoescape
 
 
 def send_summary(summary: dict):
+
+    if not bool(summary):
+        logging.info("The summary is empty. No need to send a notification")
+        return
 
     db = os.getenv("DB_FILE")
     date = formatdate(localtime=True)
